@@ -1,8 +1,16 @@
+- [Introduction](#introduction)
+- [Environnement](#environnement)
+- [Utilisation](#utilisation)
+
 # Introduction
 
 Ce programme fonctionnant pour un jeu francophone, cette documentation ne sera rédigée qu'en français.
 
 Ce programme à pour objectif de faire un résumé de combat.
+
+| Date       | Version | Description                         | Auteur     |
+|------------|---------|-------------------------------------|------------|
+| 18/05/2022 | 1.0.0   | Liste basique des pertes par flotte | Andromelus |
 
 # Environnement
 
