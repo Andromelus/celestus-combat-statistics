@@ -1,5 +1,7 @@
 - [Introduction](#introduction)
 - [Environnement](#environnement)
+  - [1.0.0](#100)
+  - [2.0.0](#200)
 - [Utilisation](#utilisation)
 
 # Introduction
@@ -8,12 +10,15 @@ Ce programme fonctionnant pour un jeu francophone, cette documentation ne sera r
 
 Ce programme à pour objectif de faire un résumé de combat.
 
-| Date       | Version | Description                         | Auteur     |
-|------------|---------|-------------------------------------|------------|
-| 18/05/2022 | 1.0.0   | Liste basique des pertes par flotte | Andromelus |
+| Date       | Version | Description                                                                                                                           | Auteur     |
+| ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| 18/05/2022 | 1.0.0   | Liste basique des pertes par flotte                                                                                                   | Andromelus |
+| 27/05/2022 | 2.0.0   | Peut prendre en compte un ou plusieurs rapports de combat. Ne classe plus les joueurs par attaquants/défenseurs dans le calcul final. | Andromelus |
+
 
 # Environnement
 
+## 1.0.0
 Ce programme est écrit en [AWK](https://fr.wikipedia.org/wiki/Awk).
 
 Awk n'est (à ma connaissance) pas disponible nativement sous Windows, mais l'est (dans de nombreuses distributions) sous Linux.
@@ -26,14 +31,17 @@ Ce programme a été développé sous:
 
 Le fonctionnement sous une autre version/dérivé de Awk n'est pas assuré.
 
+## 2.0.0
+
+A partir de cette version, le programme nécessite bash. Développé avec `GNU bash, version 4.4.23(1)-release (x86_64-pc-msys)`. Le fonctionnement avec une autre version de bash n'est pas assurée.
+
 # Utilisation
 
-- Récupére le script ``stats.awk``
+- Récupére l'ensemble des fichiers (ou au minimum, le contenu le dossier nommé `src` et `run.sh`)
 - Télécharger le code source de la page web d'un combat
     - Ouvrez le rapport de combat
     - Affichez le code source de la page
 ![show source code](img/dl_combat_1.png)
-    - Copier tout le contenu de la page et sauvegardez le dans un fichier au même niveau que le script ``stats.awk`` (dans la suite de cet exemple, le fichier se nomme "source")
+    - Copier tout le contenu de la page et sauvegardez le dans un fichier stocké dans un dossier nommé `reports`, situé au même niveau que ``stats.awk``
 ![copy source code](img/dl_combat_2.png)
-    - Lancez le script avec la commande suivante: ``awk -f stats.awk source``
-![execute command](img/dl_combat_3.png)
+    - Lancez le script avec la commande suivante: ``bash run.sh``

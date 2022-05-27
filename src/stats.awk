@@ -70,7 +70,11 @@ function get_initial_quantity(line) {
     gsub(";", "", splitted_line[2])
     quantity = splitted_line[2]
     player_type = get_player_type(splitted_line[1])
-    initial_quantities[player_type, player_id, ship_id] = quantity
+    if (player_type == "D") {
+        initial_quantities[player_type, defenders[player_id], ship_id] = quantity
+    } else {
+        initial_quantities[player_type, attackers[player_id], ship_id] = quantity
+    }
 }
 
 
@@ -82,9 +86,14 @@ function get_ship_qtt(line) {
     gsub(";", "", splitted_line[2])
     quantity = splitted_line[2]
     player_type = get_player_type(splitted_line[1])
-    current_quantities[player_type, player_id, ship_id] = quantity
+    if (player_type == "D") {
+        current_quantities[player_type, defenders[player_id], ship_id] = quantity
+    } else {
+        current_quantities[player_type, attackers[player_id], ship_id] = quantity
+    }
 }
 {
+
     # get player list
     if (round == 0) {
         if (index($1, "Pseudo") != 0) {
@@ -121,36 +130,31 @@ function get_ship_qtt(line) {
 }
 
 END {
-    print "\n ----- Pertes totales -----" 
-    print "Attaquants :"
     for (id in attackers) {
-        print "- " attackers[id]
         for (key in initial_quantities) {
             split(key, sub_keys, SUBSEP)
             player_type = sub_keys[1]
-            player_id = sub_keys[2]
+            player_name = sub_keys[2]
             ship_id = sub_keys[3]
-            if (player_id == id && player_type == "A") {
+            if (player_name == attackers[id] && player_type == "A") {
                 lost = initial_quantities[key] - current_quantities[key]
                 if (lost != 0) {
-                    print "    - " ship_list[ship_id] " : " lost
+                    print attackers[id] "," ship_list[ship_id] "," lost
                 }            
             }
         }
     }
 
-    print "Défenseurs :"
     for (id in defenders) {
-        print "- " defenders[id]
         for (key in initial_quantities) {
             split(key, sub_keys, SUBSEP)
             player_type = sub_keys[1]
-            player_id = sub_keys[2]
+            player_name = sub_keys[2]
             ship_id = sub_keys[3]
-            if (player_id == id && player_type == "D") {
+            if (player_name == defenders[id] && player_type == "D") {
                 lost = initial_quantities[key] - current_quantities[key]
                 if (lost != 0) {
-                    print "    - " ship_list[ship_id] " : " lost
+                    print defenders[id] "," ship_list[ship_id] "," lost
                 }
             }
         }
