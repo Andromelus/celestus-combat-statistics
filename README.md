@@ -14,7 +14,7 @@ Ce programme à pour objectif de faire un résumé de combat.
 | ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
 | 18/05/2022 | 1.0.0   | Liste basique des pertes par flotte                                                                                                   | Andromelus |
 | 27/05/2022 | 2.0.0   | Peut prendre en compte un ou plusieurs rapports de combat. Ne classe plus les joueurs par attaquants/défenseurs dans le calcul final. | Andromelus |
-
+| 30/05/2022 | 2.1.0   | Récupère la quantité de ressources pillées (perdues par le premier défenseur) | Andromelus |
 
 # Environnement
 
