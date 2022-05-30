@@ -21,10 +21,10 @@ BEGIN {
 
 END {
     for (player in players) {
-        print " - " player
+        print "- " player
         for (ship in ships) {
             if (count[player, ship] != "") {
-                print "    " ship " : " count[player, ship]
+                print "  - " ship " : " count[player, ship]
             }
         }
     }

@@ -122,11 +122,35 @@ function get_ship_qtt(line) {
         }
     }
 
+
+    if (index($1, "Rounds["round"][\"Events\"][event]") != 0 && match($4, "Victoire") && match($4, "attaquant")) {
+        regex=">[0-9]{1,3}(,[0-9]{1,3})*<"
+        data_source = $0
+        resources[0] = ""
+        resources[1] = ""
+        resources[2] = ""
+        for (key in resources) {
+            where = match(data_source, regex)
+            if (where == 0) {
+                print "expecting value for " key ". Stop"
+                exit 1
+            } else {
+                value = substr(data_source, RSTART, RLENGTH)
+                gsub("<","", value)
+                gsub(">","", value)
+                gsub(",","", value)
+                resources[key] = value
+                data_source = substr(data_source, where + RLENGTH, length(data_source) - where)
+            }
+        }
+    }
+
+
+   
     if (index($0, next_round_pattern) != 0) {
         round = round + 1
         define_next_round_pattern(round)
     }        
-
 }
 
 END {
@@ -158,5 +182,15 @@ END {
                 }
             }
         }
+    }
+    for (key in resources) {
+        if (key == 0) {
+            resource = "metal"
+        } else if (key == 1) {
+            resource = "tritium"
+        } else if (key == 2) {
+            resource = "pps"
+        }
+        print defenders[1] "," resource "," resources[key]
     }
 }
