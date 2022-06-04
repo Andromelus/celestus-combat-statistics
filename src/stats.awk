@@ -2,6 +2,7 @@ BEGIN {
     FS = "="
     round = 0
     define_next_round_pattern(round)
+    expected_version = "3;"
 }
 
 function get_player_type(definition) {
@@ -124,6 +125,14 @@ function get_object_loot(line) {
 }
 
 {
+
+    # check combat system version
+    if (NR == 2) {
+        if ($2 != expected_version) {
+            print "Version found: "$2"|Version expected: " expected_version "| Error, stopping"
+            exit 1
+        }
+    }
 
     # get player list
     if (round == 0) {
