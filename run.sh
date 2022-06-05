@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Calculator version 2.0.0"
+echo "Calculator version 3.0.0"
 
 nbr_reports=$(ls -l ./reports/*.htm | wc -l)
 
