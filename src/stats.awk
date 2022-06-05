@@ -2,6 +2,7 @@ BEGIN {
     FS = "="
     round = 0
     define_next_round_pattern(round)
+    expected_version = "3;"
 }
 
 function get_player_type(definition) {
@@ -77,7 +78,6 @@ function get_initial_quantity(line) {
     }
 }
 
-
 function get_ship_qtt(line) {
     split(line, splitted_line, "=")
     ship_id = get_ship_id(splitted_line[1])
@@ -92,7 +92,47 @@ function get_ship_qtt(line) {
         current_quantities[player_type, attackers[player_id], ship_id] = quantity
     }
 }
+
+function get_object_loot(line) {
+    regex = "> [0-9]{1,5} [éàa-zA-Z0-9\-]{1,}( [éàa-zA-Z0-9\-]{1,})*<"
+    data_source = line
+    where = match(data_source, regex)
+    while(where != 0) {
+        if (where == 0) {
+            print "expecting value for " key ". Stop"
+            exit 1
+        } else {
+            value = substr(data_source, RSTART, RLENGTH)
+            gsub("<","", value)
+            gsub(">","", value)
+            gsub(",","", value)
+            split(value, value_info, " ")
+            qtt = 0
+            object = ""
+            for (i=0; i <= length(value_info); i++) {
+                if (i == 1) {
+                    qtt = value_info[i]
+                } else if (i > 1) {
+                    object = object " " value_info[i]
+                }
+            }
+            object_loot[object] = qtt
+            data_source = substr(data_source, where + RLENGTH, length(data_source) - where)
+            where = match(data_source, regex)
+        }
+    }
+    
+}
+
 {
+
+    # check combat system version
+    if (NR == 2) {
+        if ($2 != expected_version) {
+            print "Version found: "$2"|Version expected: " expected_version "| Error, stopping"
+            exit 1
+        }
+    }
 
     # get player list
     if (round == 0) {
@@ -122,6 +162,10 @@ function get_ship_qtt(line) {
         }
     }
 
+    if (match($3, "Events/Pillage.png") != 0 && index($1, "Rounds["round"][\"Events\"][event]") != 0) {
+        get_object_loot($0)
+    } 
+
 
     if (index($1, "Rounds["round"][\"Events\"][event]") != 0 && match($4, "Victoire") && match($4, "attaquant")) {
         regex=">[0-9]{1,3}(,[0-9]{1,3})*<"
@@ -145,8 +189,6 @@ function get_ship_qtt(line) {
         }
     }
 
-
-   
     if (index($0, next_round_pattern) != 0) {
         round = round + 1
         define_next_round_pattern(round)
@@ -185,12 +227,16 @@ END {
     }
     for (key in resources) {
         if (key == 0) {
-            resource = "metal"
+            resource = "Métal"
         } else if (key == 1) {
-            resource = "tritium"
+            resource = "Tritium"
         } else if (key == 2) {
-            resource = "pps"
+            resource = "Photopile"
         }
         print defenders[1] "," resource "," resources[key]
+    }
+
+    for (key in object_loot) {
+        print defenders[1] "," substr(key, 2) "," object_loot[key]
     }
 }
