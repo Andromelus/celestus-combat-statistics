@@ -1,7 +1,7 @@
 - [Introduction](#introduction)
 - [Environnement](#environnement)
   - [1.0.0](#100)
-  - [2.0.0](#200)
+  - [2.0.0 et supérieure](#200-et-supérieure)
 - [Utilisation](#utilisation)
 
 # Introduction
@@ -15,7 +15,8 @@ Ce programme à pour objectif de faire un résumé de combat.
 | 18/05/2022 | 1.0.0   | Liste basique des pertes par flotte                                                                                                   | Andromelus |
 | 27/05/2022 | 2.0.0   | Peut prendre en compte un ou plusieurs rapports de combat. Ne classe plus les joueurs par attaquants/défenseurs dans le calcul final. | Andromelus |
 | 30/05/2022 | 2.1.0   | Récupère la quantité de ressources pillées (perdues par le premier défenseur)                                                         | Andromelus |
-| 05/06/2022 | 2.1.0   | Vérification de version et pillage d'objet                                                                                            | Andromelus |
+| 05/06/2022 | 2.2.0   | Vérification de version et pillage d'objet                                                                                            | Andromelus |
+| 05/06/2022 | 3.0.0   | Ecriture des résultats sous forme de tableau HTML ou liste classique                                                                  | Andromelus |
 
 # Environnement
 
@@ -32,7 +33,7 @@ Ce programme a été développé sous:
 
 Le fonctionnement sous une autre version/dérivé de Awk n'est pas assuré.
 
-## 2.0.0
+## 2.0.0 et supérieure
 
 A partir de cette version, le programme nécessite bash. Développé avec `GNU bash, version 4.4.23(1)-release (x86_64-pc-msys)`. Le fonctionnement avec une autre version de bash n'est pas assurée.
 
