@@ -132,6 +132,7 @@ function get_object_loot(line) {
             print "Version found: "$2"|Version expected: " expected_version "| Error, stopping"
             exit 1
         }
+
     }
 
     # get player list
@@ -166,7 +167,7 @@ function get_object_loot(line) {
         get_object_loot($0)
     } 
 
-
+    # defines quantity of resources captured
     if (index($1, "Rounds["round"][\"Events\"][event]") != 0 && match($4, "Victoire") && match($4, "attaquant")) {
         regex=">[0-9]{1,3}(,[0-9]{1,3})*<"
         data_source = $0
@@ -189,12 +190,47 @@ function get_object_loot(line) {
         }
     }
 
+    # used to count victories
+    if (index($1, "Rounds["round"][\"Events\"][event]") != 0 && match($3, "VictAtt.png")) {
+        for (id in attackers) {
+            if (combat_result["A", id, "Victoire(combat)"] == 0) {
+                combat_result["A", id, "Victoire(combat)"] = 1
+            } else {
+                combat_result["A", id, "Victoire(combat)"] = combat_result["A", id, "Victoire(combat)"] + 1
+            }
+        }
+        for (id in defenders) {
+            if (combat_result["D", id, "Defaite(combat)"] == 0) {
+                combat_result["D", id, "Defaite(combat)"] = 1
+            } else {
+                combat_result["D", id, "Defaite(combat)"] = combat_result["D", id, "Defaite(combat)"] + 1
+            }
+        }
+
+    }
+
+    # # used to count defeats
+    if (index($1, "Rounds["round"][\"Events\"][event]") != 0 && match($3, "VictDef.png")) {
+        for (id in defenders) {
+            if (combat_result["D", id, "Victoire(combat)"] == 0) {
+                combat_result["D", id, "Victoire(combat)"] = 1
+            } else {
+                combat_result["D", id, "Victoire(combat)"] = combat_result["D", id, "Victoire(combat)"] + 1
+            }
+        }
+        for (id in attackers) {
+            if (combat_result["A", id, "Defaite(combat)"] == 0) {
+                combat_result["A", id, "Defaite(combat)"] = 1
+            } else {
+                combat_result["A," id, "Defaite(combat)"] = combat_result["A," id, "Defaite(combat)"] + 1
+            }
+        }
+    }
     if (index($0, next_round_pattern) != 0) {
         round = round + 1
         define_next_round_pattern(round)
-    }        
+    }
 }
-
 END {
     for (id in attackers) {
         for (key in initial_quantities) {
@@ -207,6 +243,15 @@ END {
                 if (lost != 0) {
                     print attackers[id] "," ship_list[ship_id] "," lost
                 }            
+            }
+        }
+        for (key in combat_result) {
+            split(key, sub_keys, SUBSEP)
+            player_type = sub_keys[1]
+            player_id = sub_keys[2]
+            result_type = sub_keys[3]
+            if (player_type == "A") {
+                print attackers[player_id] "," result_type "," combat_result[key]
             }
         }
     }
@@ -222,6 +267,15 @@ END {
                 if (lost != 0) {
                     print defenders[id] "," ship_list[ship_id] "," lost
                 }
+            }
+        }
+        for (key in combat_result) {
+            split(key, sub_keys, SUBSEP)
+            player_type = sub_keys[1]
+            player_id = sub_keys[2]
+            result_type = sub_keys[3]
+            if (player_type == "D") {
+                print defenders[player_id] "," result_type "," combat_result[key]
             }
         }
     }
