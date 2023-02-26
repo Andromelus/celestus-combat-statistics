@@ -226,6 +226,43 @@ function get_object_loot(line) {
             }
         }
     }
+
+    if (index($1, "Rounds["round"][\"Events\"][event]") != 0 && match($3, "BPExplo.png")) {
+        split($4, destruction, "->")
+        iindex = 1
+        for (key in destruction) {
+            if (iindex != 1) {
+                gsub("<br/>", "",destruction[key])
+                gsub("<br>", "",destruction[key])
+                gsub(";", "",destruction[key])
+                gsub("\"", "",destruction[key])
+                gsub("\\.", "",destruction[key])
+                gsub(" ont été ", "",destruction[key])
+                # TODO regex to avoid multiple command
+                gsub("détruites", "",destruction[key])
+                gsub("détruite", "",destruction[key])
+                gsub("détruits", "",destruction[key])
+                gsub("détruit", "",destruction[key])
+                gsub("^ ", "",destruction[key])
+                split(destruction[key], destruction_info, " ")
+                destruction_quantity = destruction_info[1]
+                destruction_name = ""
+                for (element in destruction_info) {
+                    if (element != 1) {
+                        destruction_name = destruction_name " " destruction_info[element]
+                    }
+                }
+                gsub("^ ", "", destruction_name)
+                if (combat_result["D", 1, destruction_name] == 0) {
+                    combat_result["D", 1, destruction_name] = destruction_quantity
+                } else {
+                    combat_result["D", 1, destruction_name] = combat_result["D", 1, destruction_name] + destruction_quantity
+                }
+            }
+            iindex = iindex + 1
+        }
+    }
+    
     if (index($0, next_round_pattern) != 0) {
         round = round + 1
         define_next_round_pattern(round)
