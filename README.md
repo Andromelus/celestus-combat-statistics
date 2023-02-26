@@ -1,8 +1,9 @@
 - [Introduction](#introduction)
+- [Utilisation](#utilisation)
 - [Environnement](#environnement)
   - [1.0.0](#100)
   - [2.0.0 et supérieure](#200-et-supérieure)
-- [Utilisation](#utilisation)
+- [Utilisation](#utilisation-1)
 
 # Introduction
 
@@ -17,7 +18,13 @@ Ce programme à pour objectif de faire un résumé de combat.
 | 30/05/2022 | 2.1.0   | Récupère la quantité de ressources pillées (perdues par le premier défenseur)                                                         | Andromelus |
 | 05/06/2022 | 2.2.0   | Vérification de version et pillage d'objet                                                                                            | Andromelus |
 | 05/06/2022 | 3.0.0   | Ecriture des résultats sous forme de tableau HTML ou liste classique                                                                  | Andromelus |
+| 26/02/2023 | 3.1.0   | Prise en compte de la destruction des structures orbitales par bombe P                                                                  | Andromelus |
 
+# Utilisation
+
+```bash
+bash run.sh
+```
 # Environnement
 
 ## 1.0.0
